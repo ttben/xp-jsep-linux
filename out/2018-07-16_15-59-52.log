@@ -1,0 +1,88 @@
+59 scripts founds.
+40 commits to handle.
+a823fed
+Copying linux kernel...
+Command terminated by signal 2
+0:00.28
+fatal: not a git repository (or any of the parent directories): .git
+Applying coccicheck scripts/coccinelle/misc/cond_no_effect.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.02
+Applying coccicheck scripts/coccinelle/misc/of_table.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/boolreturn.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/warn.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/noderef.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/orplus.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/irqf_oneshot.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/boolconv.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/ifcol.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/semicolon.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/array_size.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/boolinit.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/returnvar.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/cstptr.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/badty.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/ifaddr.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/doubleinit.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/misc/bugon.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/locks/mini_lock.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/locks/call_kern.cocci...
+make: *** No rule to make target 'coccicheck'.  Stop.
+Command exited with non-zero status 2
+0:00.00
+Applying coccicheck scripts/coccinelle/locks/flags.cocci...
