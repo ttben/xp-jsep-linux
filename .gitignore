@@ -1,2 +1,5 @@
 linux
 .DS_Store
+
+commitsampler/target/
+commitsampler/.idea/
