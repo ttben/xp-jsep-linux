@@ -102,7 +102,7 @@ function run_xp() {
     cd ${path_to_current_commit}
 
     handle_commit ${PATH_TO_BASE_LINUX} ${commit_hash} ${path_to_current_commit} >${path_to_current_commit}/trace.log 2>&1
-exit -17
+
     if [ $? -eq 0 ]; then
       rm -rf ${path_to_current_commit}/linux
       mv ${path_to_current_commit} ${PATH_TO_OUTPUT}/${commit_hash}
