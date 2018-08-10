@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Parser {
     public static final String PATH_TO_CSV_FOLDER = "/Users/bennibenjamin/Work/xp-jsep-linux/csv-files/";
+    public static final String PATH_TO_TRACES_OUT_FOLDER = "/Users/bennibenjamin/Work/xp-jsep-linux/xp-raw-results/";
 
     public static void main(String[] args) throws IOException, ParseException {
         List<File> traceFiles = loadTraceFiles();
@@ -209,9 +210,22 @@ public class Parser {
     public static List<File> loadTraceFiles() {
         List<File> result = new ArrayList<>();
 
-        result.add(new File("/Users/bennibenjamin/Desktop/trace.log"));
-        result.add(new File("/Users/bennibenjamin/Desktop/trace2.log"));
-        result.add(new File("/Users/bennibenjamin/Desktop/trace3.log"));
+        String path = PATH_TO_TRACES_OUT_FOLDER + "/out";
+        File rootFolder = new File(path);
+
+        for (File commitFolder : rootFolder.listFiles()) {
+            if (commitFolder.isDirectory()) {
+                for (File f : commitFolder.listFiles()) {
+                    if (f.getName().contains("trace.log")) {
+                        result.add(f);
+                    }
+                }
+            }
+        }
+
+//        result.add(new File("/Users/bennibenjamin/Desktop/trace.log"));
+//        result.add(new File("/Users/bennibenjamin/Desktop/trace2.log"));
+//        result.add(new File("/Users/bennibenjamin/Desktop/trace3.log"));
 
         return result;
     }

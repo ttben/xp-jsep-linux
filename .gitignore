@@ -3,3 +3,9 @@ linux
 
 commitsampler/target/
 commitsampler/.idea/
+
+*/out/*
+
+*.iml
+*.idea/
+*.class
