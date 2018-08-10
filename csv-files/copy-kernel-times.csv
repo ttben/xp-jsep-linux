@@ -1,0 +1,4 @@
+commit.id;exit.status;perc.of.cpu;elapsed.real.time;elapsed.system.time;elapsed.user.time
+7007ba630e4a;0;12%;86.53;9.47;0.94
+15b4dd798149;0;11%;96.76;10.34;0.91
+847ecd3fa311;0;12%;52.92;5.92;0.45

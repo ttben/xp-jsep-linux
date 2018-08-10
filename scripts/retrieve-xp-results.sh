@@ -1,6 +1,6 @@
 #!/bin/bash
 
-home_result="/home/benni/xp/src"
+home_result="/home/benni/xp/out"
 target="/home/benni/outputs-result"
 
 mkdir -p ${target}
@@ -14,8 +14,8 @@ do
     commit_hash=`basename $entry`
     mkdir ${target}/${commit_hash}
     cd ${entry}
-    echo "wanna zip -r ${entry}/output.zip ${entry}/outputs"
-    zip -r ${entry}/output.zip ${entry}/outputs
+    echo "wanna zip -r ${entry}/output.zip ${entry}/*"
+    zip -r ${entry}/output.zip ${entry}/*
     mv ${entry}/output.zip ${target}/${commit_hash}/
   fi
 done

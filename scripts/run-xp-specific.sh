@@ -25,7 +25,7 @@ function generate_patch() {
     name=$(basename ${cocci_script})
     IFS='.' read -ra SPLIT <<<$name
     folder_name_of_script=${SPLIT[0]}
-    log_time "time_generate_patches_phase-${phase}" "make coccicheck J=8 COCCI=${cocci_script} MODE=patch > ${path_to_current_patches}${folder_name_of_script}.output"
+    log_time "time_generate_patches_phase-${phase}-${folder_name_of_script}" "make coccicheck J=8 COCCI=${cocci_script} MODE=patch > ${path_to_current_patches}${folder_name_of_script}.output 2> ${path_to_current_patches}${folder_name_of_script}.error"
   done
 }
 
@@ -61,7 +61,7 @@ function handle_commit() {
     # echo "Applying patch of ${cocci_script}..."
     # /usr/bin/time -f "%E" patch -f -p 1 -d ${path_to_current_commit}/linux/ < ${path_to_current_patches}${folder_name_of_script}.output
     # gtime -f "%E" patch -f -p 1 -d ${path_to_current_commit}/linux/ <${path_to_current_patches}${folder_name_of_script}.output
-    log_time "${cocci_script}" "patch -f -p 1 -d ${path_to_current_commit}/linux/ <${path_to_current_patches}${folder_name_of_script}.output"
+    log_time "${cocci_script}" "patch -f -p 1 -d ${path_to_current_commit}/linux/ < ${path_to_current_patches}${folder_name_of_script}.output > ${path_to_current_patches}${folder_name_of_script}.patch.trace 2> ${path_to_current_patches}${folder_name_of_script}.patch.error"
   done
   #  ------------------------------------------------------------------------
 
@@ -69,7 +69,7 @@ function handle_commit() {
   #  If the new set is either empty or different from the first one, OUPSY  ----
   path_to_current_patches=${path_to_current_commit}/outputs/news/ # <---- "news" !
   mkdir -p ${path_to_current_patches}
-  generate_patch $path_to_current_patches $patches_list 1
+  generate_patch $path_to_current_patches $patches_list 2
   #  ------------------------------------------------------------------------
 
   echo "end_date:" $(date -R)
@@ -123,5 +123,5 @@ run_xp "$@" >${PATH_TO_OUTPUT}/xp-${xp_date}.out 2>&1
 # ./run-xp-specific.sh /home/benni/xp/linux /home/benni/xp/out 7007ba630e4a ce8d1015a2b8 847ecd3fa311 15b4dd798149 bce1a65172d1 2551a53053de bfd40eaff5ab 2f53fbd52182 ec663d967b22 827ed2b06b05 e71ff89c712c 5003ae1e735e 96801b35f07e 38651683aa98 4efe37f4c4ef b134bd90286d 25a3ba610609 0d4a6608f68c 78109d230b79
 
 
-echo "#! /bin/bash
-./run-xp-specific.sh /home/benni/xp/linux /home/benni/xp/out 7007ba630e4a ce8d1015a2b8 847ecd3fa311 15b4dd798149 bce1a65172d1 2551a53053de bfd40eaff5ab 2f53fbd52182 ec663d967b22 827ed2b06b05 e71ff89c712c 5003ae1e735e 96801b35f07e 38651683aa98 4efe37f4c4ef 134bd90286d 25a3ba610609 0d4a6608f68c 78109d230b79" > start-xp-2018-08-03_16-00.sh
+# echo "#! /bin/bash
+# ./run-xp-specific.sh /home/benni/xp/linux /home/benni/xp/out 7007ba630e4a ce8d1015a2b8 847ecd3fa311 15b4dd798149 bce1a65172d1 2551a53053de bfd40eaff5ab 2f53fbd52182 ec663d967b22 827ed2b06b05 e71ff89c712c 5003ae1e735e 96801b35f07e 38651683aa98 4efe37f4c4ef b134bd90286d 25a3ba610609 0d4a6608f68c 78109d230b79" > start-xp-2018-08-03_16-00.sh
