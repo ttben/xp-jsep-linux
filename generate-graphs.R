@@ -25,6 +25,24 @@ list_sp_fail_success <- read.csv(paste(root_folder_of_csv_files, "list-sp-fail-s
 
 
 
+pdf(paste(root_folder_of_result_graphs, "chart-interactions-per-commit.pdf", sep="/"), width=5, height=6, paper='special')
+
+fail_success_interactions <- read.csv(paste(root_folder_of_csv_files, "sp-fail-success.csv", sep="/") , sep=";")
+fail_success_interactions$falsetrue <- NULL
+fail_success_interactions$falsefalse <- NULL
+fail_success_interactions$truefalse <- NULL
+
+
+gr <- ggplot(
+      fail_success_interactions,
+      aes(x=commit.id, y=truetrue), main=2
+  ) + ylim(1, 5) + geom_bar(stat = "identity", width = 0.6) + theme_bw() + theme(
+    axis.text.x = element_text(angle = 90, hjust = 1),
+    axis.text=element_text(size=8),
+    axis.title=element_text(size=12,face="bold")) + labs(x = "Commit", y = "Number of interactions detected")
+
+gr
+dev.off()
 
 
 
