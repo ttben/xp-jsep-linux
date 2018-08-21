@@ -62,17 +62,22 @@ gr <- ggplot(
 gr
 dev.off()
 
-pdf(paste(root_folder_of_result_graphs, "exectimes_global.pdf", sep="/"),width=4, height=10, paper='special')
+
+
+
+pdf(paste(root_folder_of_result_graphs, "exectimes_global.pdf", sep="/"),width=18, height=12, paper='special')
 exectimes_global <- read.csv(paste(root_folder_of_csv_files, "global-exec-times.csv", sep="/") , sep=";")
-gr <- ggplot(exectimes_global, aes(y=duration.in.min), main=2) + geom_boxplot() + labs(y = "Computing time in hours") + theme(axis.title.x=element_blank(),
-          axis.text.x=element_blank(),
-          axis.ticks.x=element_blank(),
-          axis.text=element_text(size=26),
-          axis.title=element_text(size=28,face="bold")
-          #, plot.caption = element_text(hjust=0.5, size=rel(1.2))
-         ) # + labs(caption="Execution time to apply 59 semantic patches and check them") +
+gr <- ggplot(data=exectimes_global, aes(x=commit.id.phase.1, y=duration.in.min), main=2) +   geom_boxplot() +
+theme(
+axis.text.x = element_text(angle = 90, hjust = 1),
+axis.text=element_text(size=14),
+axis.title=element_text(size=16,face="bold")
+          ) + geom_bar(stat="identity")+
+        labs(x = "Commit", y = "Computing time in minutes")  + geom_hline(yintercept = mean(exectimes_global$duration.in.min), color="blue")
 gr
 dev.off()
+
+
 
 
 pdf(paste(root_folder_of_result_graphs, "copy-kernel-time.pdf", sep="/"),width=4, height=10, paper='special')
