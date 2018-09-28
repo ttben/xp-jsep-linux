@@ -13,16 +13,48 @@ public class Parser {
         List<File> traceFiles = loadTraceFiles();
         Map<String, List<Pair<String, String>>> data = parseTraceFiles(traceFiles);
 
+        Map<String, List<Pair<String, String>>> stringListMap = parseTraceFilesInverted(traceFiles);
+
+        Map<String, Double> mapCommitIDMeanExectimePhase1 = new HashMap<>();
+        System.out.println("commit.id;mean.exec.time.phase.1");
+        for (String commitHash : stringListMap.keySet()) {
+            List<Pair<String, String>> keyValueList = stringListMap.get(commitHash);
+            Double addedExecTime = 0.0;
+            int nbPatchPhase1 = 0;
+            for (Pair<String, String> currentKeyValue : keyValueList) {
+                if (currentKeyValue.getKey().contains("phase-1-")) {
+                    nbPatchPhase1 ++;
+                    String values = currentKeyValue.getValue();
+                    Double execTimeOfCurrentPatch = Double.parseDouble(values.split(";")[2]);
+                    addedExecTime += execTimeOfCurrentPatch;
+                }
+            }
+            System.out.println(commitHash + ";" + addedExecTime/nbPatchPhase1);
+            mapCommitIDMeanExectimePhase1.put(commitHash, addedExecTime/nbPatchPhase1);
+        }
+
+
+
+
         Map<String, List<Pair<String, String>>> dataPhase1 = new HashMap<>();
         Map<String, List<Pair<String, String>>> dataApplyPatches = new HashMap<>();
         Map<String, List<Pair<String, String>>> dataPhase2 = new HashMap<>();
         extractPhasesData(data, dataPhase1, dataApplyPatches, dataPhase2);
 
-        writeToFile("global-exec-times.csv", generateCSVForExecTime(data));
-        writeToFile("copy-kernel-times.csv", generateCSVForCopyingKernel(data));
-        writeToFile("nb-semantic-patches.csv", generateCSVForSemanticPatchesEvolution(data));
-        writeToFile("phase1.csv", generateCSVForPhase(dataPhase1));
-        writeToFile("phase2.csv", generateCSVForPhase(dataPhase2));
+        computeMeanTime(dataPhase1);
+
+//        writeToFile("global-exec-times.csv", generateCSVForExecTime(data));
+//        writeToFile("copy-kernel-times.csv", generateCSVForCopyingKernel(data));
+//        writeToFile("nb-semantic-patches.csv", generateCSVForSemanticPatchesEvolution(data));
+//        writeToFile("phase1.csv", generateCSVForPhase(dataPhase1));
+//        writeToFile("phase2.csv", generateCSVForPhase(dataPhase2));
+    }
+
+    private static void computeMeanTime(Map<String, List<Pair<String, String>>> data) {
+        for (String commitHash : data.keySet()) {
+            List<Pair<String,String>> currentMetric =data.get(commitHash);
+            System.out.println(commitHash);
+        }
     }
 
     private static String generateCSVForSemanticPatchesEvolution(Map<String, List<Pair<String, String>>> data) {
@@ -57,7 +89,7 @@ public class Parser {
 
     private static String generateCSVForExecTime(Map<String, List<Pair<String, String>>> data) throws ParseException {
         StringBuilder contentBuilder = new StringBuilder();
-        contentBuilder.append("duration.in.min").append("\n");
+        contentBuilder.append("commit.id.phase.1;duration.in.min").append("\n");
         List<Pair<String, String>> startDates = data.get("start_date");
         List<Pair<String, String>> endDates = data.get("end_date");
 
@@ -74,7 +106,7 @@ public class Parser {
                     Date endDate = format.parse(endDateStr);
 
                     long duration = endDate.toInstant().toEpochMilli() - startDate.toInstant().toEpochMilli();
-                    contentBuilder.append(duration / 60000).append("\n");
+                    contentBuilder.append(commitID).append(";").append(duration / 60000).append("\n");
                 }
             }
         }
@@ -135,6 +167,62 @@ public class Parser {
                 }
             }
         }
+    }
+
+    private static Map<String, List<Pair<String, String>>> parseTraceFilesInverted(List<File> traceFiles) throws IOException {
+        Map<String, List<Pair<String, String>>> data = new HashMap<>();
+        // map commitID  --> [ (keymetric,value), ...  ]
+
+        for (File traceFile : traceFiles) {
+
+            String commitID = findCommitID(traceFile);
+
+            BufferedReader br = new BufferedReader(new FileReader(traceFile));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] split = line.split(":");
+
+                if (line.startsWith("/tmp/")) {
+                    if (line.contains("Command exited with non-zero")) {
+                        split = new String[]{split[0], "-1;" + br.readLine()};
+                    } else {
+                        split = new String[]{split[0], "0;" + split[1]};
+
+                    }
+                }
+
+                if (split.length != 2) {
+
+                    // handle date case
+                    if (split[0].startsWith("start_date") || split[0].startsWith("end_date")) {
+                        String date = "";
+                        for (int i = 1; i < split.length; i++) {
+                            date = date.concat(split[i]);
+                            if (i != split.length - 1) {
+                                date = date.concat(":");
+                            }
+                        }
+
+                        split = new String[]{split[0], date};
+                    }
+                }
+
+                String keyMetric = split[0].trim();
+                String value = split[1].trim();
+                Pair<String, String> pair = new Pair<>(keyMetric, value);
+
+                List<Pair<String, String>> dataForKeyMetric = new ArrayList<>();
+                if (data.containsKey(commitID)) {
+                    dataForKeyMetric = data.get(commitID);
+                }
+
+                dataForKeyMetric.add(pair);
+                data.put(commitID, dataForKeyMetric);
+            }
+
+        }
+        return data;
     }
 
     private static Map<String, List<Pair<String, String>>> parseTraceFiles(List<File> traceFiles) throws IOException {

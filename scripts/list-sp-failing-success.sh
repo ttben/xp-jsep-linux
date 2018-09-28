@@ -43,11 +43,11 @@ do
 
         contentNew=`cat $fileNew`
         contentNewSize=`cat $fileNew | wc -l`
+        #if contains less than 5 lines and the two last one are empty OR contains coccicheck failed => failed
         if [[ $contentNew = *"coccicheck failed"* ]]; then
           str=${str}";false"
         else
 
-          #if contains only 5 lines and the two last one are empty OR contains coccicheck failed => failed
           if [ -z "$(tail -c 2 "$fileNew")" -a $contentNewSize -lt 5 ]; then
             str=${str}";false"
           else
